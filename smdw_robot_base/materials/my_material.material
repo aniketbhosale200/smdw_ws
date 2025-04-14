@@ -1,0 +1,13 @@
+material MyWorldMaterial
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture ../meshes/brown_mud_leaves_01_diff_4k.jpg
+      }
+    }
+  }
+}

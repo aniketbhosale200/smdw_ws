@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="tomato_with_tree_world">
+    <!-- Apple Tree Model -->
+    <model name="apple_tree">
+      <static>true</static>
+      <pose>0 0 0 0 0 0</pose> <!-- Tree base at (1, 1, 0) -->
+      <link name="tree_link">
+        <visual name="tree_visual">
+          <geometry>
+            <mesh>
+              <uri>file:///home/imbatman/smdw_ws/src/smdw_robot_base/meshes/new_apple_tree.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="tree_collision">
+          <geometry>
+            <mesh>
+              <uri>file:///home/imbatman/smdw_ws/src/smdw_robot_base/meshes/new_apple_tree.dae</uri>
+            </mesh>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!-- Tomato Model -->
+    <model name="tomato">
+      <static>true</static>
+      <pose>0 0 0 0 0 0</pose> <!-- Tomato at (2.08493, 3.2621, -0.31237) -->
+      <link name="tomato_link">
+        <visual name="tomato_visual">
+          <geometry>
+            <mesh>
+              <uri>file:///home/imbatman/smdw_ws/src/smdw_robot_base/meshes/new_tomato.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="tomato_collision">
+          <geometry>
+            <mesh>
+              <uri>file:///home/imbatman/smdw_ws/src/smdw_robot_base/meshes/new_tomato.dae</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.001</ixx>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyy>0.001</iyy>
+            <iyz>0.0</iyz>
+            <izz>0.001</izz>
+          </inertia>
+        </inertial>
+      </link>
+      <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+        <arm>
+          <arm_name>manipulator</arm_name>
+          <gripper_name>gripper_base</gripper_name>
+          <max_effort>10.0</max_effort>
+          <update_rate>4</update_rate>
+          <palm_link>gripper_base</palm_link>
+        </arm>
+        <forces_angle_tolerance>120</forces_angle_tolerance>
+        <gripper_link>
+          <gripper_link_name>gripper_base</gripper_link_name>
+          <gripper_link_name>right_gripper_arm</gripper_link_name>
+          <gripper_link_name>left_gripper_arm</gripper_link_name>
+          <gripper_link_name>right_tip</gripper_link_name>
+          <gripper_link_name>left_tip</gripper_link_name>
+        </gripper_link>
+        <objects>
+          <object>tomato_link</object>
+        </objects>
+      </plugin>
+    </model>
+
+    <!-- Ground Plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Lighting -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+  </world>
+</sdf>
