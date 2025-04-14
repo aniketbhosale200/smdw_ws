@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="agri_bot" >
+
+
+  <!-- xoxoxoxoxoxoxx                 seee thisss                      xoxoxoxoxoxox -->
+  <!-- when you want to launch agri_bot then go to xaarm and smdw_robot_base and comment out lines that, xacro include ros2_control.xaro and gazebo.xacro
+   coz we have created both files for this agri_bot, that includes both robot's ros2_control and gazebo.xacro -->
+  <xacro:arg name="include_rollers" default="true" />
+  <xacro:include filename="$(find smdw_robot_base)/urdf/smdw_robot_base.urdf.xacro" />
+  <xacro:include filename="$(find agri_bot)/urdf/agri_bot_ros2_control.xacro"/>
+  <xacro:include filename="$(find agri_bot)/urdf/agri_bot_gazebo.xacro"/>
+
+
+  <!-- <xacro:include filename="$(find xaarm)/urdf/xaarm.urdf.xacro" />
+  <joint name="smdw_base_to_arm" type="fixed">
+    <parent link="base_link" /> 
+    <child link="xaarm_base_link" /> 
+    <origin xyz="0 0 0.1016" rpy="0 0 0" /> 
+  </joint> -->
+
+
+  <xacro:include filename="$(find aarm)/urdf/aarm.urdf.xacro" />
+  <joint name="smdw_base_to_arm" type="fixed">
+    <parent link="base_link" /> 
+    <child link="aarm_base_link" /> 
+    <origin xyz="0 0 0.1016" rpy="0 0 0" /> 
+  </joint>
+</robot>

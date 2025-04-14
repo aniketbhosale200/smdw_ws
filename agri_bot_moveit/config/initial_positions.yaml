@@ -1,0 +1,10 @@
+# Default initial positions for agri_bot's ros2_control fake system
+
+initial_positions:
+  end_effector_joint: 0.277
+  joint_1: 1.731
+  joint_2: 0.1
+  joint_3: 0.1
+  joint_4: 5.227
+  joint_5: 0.04
+  right_gripper_arm_joint: 0.001

@@ -1,0 +1,81 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 1000  
+    use_sim_time: true  
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    mecanum_drive_controller:
+      type: mecanum_drive_controller/MecanumDriveController
+
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+mecanum_drive_controller:
+  ros__parameters:
+    front_left_wheel_command_joint_name: "front_left_wheel_joint"
+    front_right_wheel_command_joint_name: "front_right_wheel_joint"
+    rear_left_wheel_command_joint_name: "rear_left_wheel_joint"
+    rear_right_wheel_command_joint_name: "rear_right_wheel_joint"
+
+    kinematics:
+      circular_radius: 0.1017  
+      semi_major_axis: 0.1017  
+      semi_minor_axis: 0.0381 
+      sum_of_robot_center_projection_on_X_Y_axis: 1.0668  # lx + ly
+
+    base_frame_id: "base_link"
+    odom_frame_id: "odom"
+
+    reference_topic: "/mecanum_drive_controller/reference"
+    use_stamped_vel: true 
+
+    publish_rate: 50.0
+    wheel_separation_x: 0.4318 
+    wheel_separation_y: 0.635
+
+    linear.x.max_velocity: 5.0
+    linear.y.max_velocity: 5.0
+    angular.z.max_velocity: 2.0
+    command_timeout: 0.5  # Resets to zero velocity if no command within 0.5s
+
+
+arm_controller:
+  ros__parameters:
+    state_publish_rate: 100.0
+    joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - end_effector_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: true
+
+gripper_controller:
+  ros__parameters:
+    state_publish_rate: 100.0
+    joints:
+      - right_gripper_arm_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    interface_name: position  
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: true
+    constraints:
+      right_gripper_arm_joint:
+        goal_time: 0.5
+        position_tolerance: 0.001

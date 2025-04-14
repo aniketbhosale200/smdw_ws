@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="agri_bot">
+
+<gazebo>
+    <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+        <parameters>/home/imbatman/smdw_ws/src/agri_bot/config/agri_bot_controller.yaml</parameters>
+    </plugin>
+</gazebo>
+
+    <!-- wheels_gazebo_tags -->
+    <gazebo reference="front_left_base_link">
+        <mu1>1.0</mu1>
+        <mu2>1.0</mu2>
+    </gazebo>
+    <gazebo reference="front_right_base_link">
+        <mu1>1.0</mu1>
+        <mu2>1.0</mu2>
+    </gazebo>
+    <gazebo reference="rear_left_base_link">
+        <mu1>1.0</mu1>
+        <mu2>1.0</mu2>
+    </gazebo>
+    <gazebo reference="rear_right_base_link">
+        <mu1>1.0</mu1>
+        <mu2>1.0</mu2>
+    </gazebo>
+<!-- 
+    <gazebo reference="front_left_wheel_joint">
+        <kp>100.0</kp>
+        <ki>0.0</ki>
+        <kd>1.0</kd>
+    </gazebo>
+    <gazebo reference="front_right_wheel_joint">
+        <kp>100.0</kp>
+        <ki>0.0</ki>
+        <kd>1.0</kd>
+    </gazebo>
+    <gazebo reference="rear_left_wheel_joint">
+        <kp>100.0</kp>
+        <ki>0.0</ki>
+        <kd>1.0</kd>
+    </gazebo>
+    <gazebo reference="rear_right_wheel_joint">
+        <kp>100.0</kp>
+        <ki>0.0</ki>
+        <kd>1.0</kd>
+    </gazebo> -->
+
+    <!-- arm gazebo tags -->
+    <gazebo>
+        <plugin name="mimic_joint_plugin" filename="libgazebo_mimic_joint_plugin.so">
+            <joint>left_gripper_arm_joint</joint>
+            <mimicJoint>right_gripper_arm_joint</mimicJoint>
+            <multiplier>1.0</multiplier>
+            <offset>0.0</offset>
+            <sensitiveness>0.0</sensitiveness>
+            <maxEffort>2.0</maxEffort>
+            <hasPID />
+        </plugin>
+    </gazebo>
+    <gazebo reference="aarm_base_link">
+        <material>Gazebo/Grey</material>
+    </gazebo>
+    <gazebo reference="link_1">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="link_2">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="link_3">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="link_4">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="link_5">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="end_effector">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="gripper_base">
+        <material>Gazebo/Grey</material>
+    </gazebo>
+    <gazebo reference="left_gripper_arm">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="left_tip">
+        <material>Gazebo/Black</material>
+    </gazebo>
+    <gazebo reference="right_gripper_arm">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="right_tip">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+</robot>
