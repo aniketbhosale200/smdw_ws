@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="smdw_robot_base">
+
+  
+  <!-- Include the left and right SMDW wheel Xacro files -->
+  <xacro:include filename="/home/imbatman/smdw_ws/src/left_smdw/urdf/left_smdw.urdf.xacro"/>
+  <xacro:include filename="/home/imbatman/smdw_ws/src/right_smdw/urdf/right_smdw.urdf.xacro"/>
+  <!-- <xacro:include filename="$(find smdw_robot_base)/urdf/camera.xacro"/>
+  <xacro:include filename="$(find smdw_robot_base)/urdf/lidar.xacro"/> -->
+
+
+
+<!-- if you wannt to launch the robot then uncomment this following lines/ but if you launch agri_bot then dnt forget to comment this  -->
+
+  <!-- <xacro:include filename="$(find smdw_robot_base)/urdf/ros2_control.xacro"/>
+  <xacro:include filename="$(find smdw_robot_base)/urdf/gazebo.xacro"/> -->
+
+<!-- _______________________________________________________________________________________ -->
+
+
+  <link name="odom">
+  </link>
+  
+  <joint name="odom_to_base_footprint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="odom"/>
+    <child link="base_footprint"/>
+  </joint>
+  <!-- Fixed joint between base_footprint and base_link -->
+  <joint name="base_fixed_joint" type="fixed">
+    <origin xyz="0 0 0.0450" rpy="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+  </joint>
+  <!-- Base footprint -->
+  <link name="base_footprint"/>
+
+  <!-- Base link -->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="5.48421351341662E-17 -4.87352495342906E-17 0.0508" rpy="0 0 0" />
+      <mass value="25" />
+      <inertia ixx="0.5656" ixy="0" ixz="0"
+               iyy="0.8627" iyz="0" izz="1.3860" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file:///home/imbatman/smdw_ws/src/smdw_robot_base/meshes/robot_base_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file:///home/imbatman/smdw_ws/src/smdw_robot_base/meshes/robot_base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+
+
+  <!-- Instantiate the SMDW wheels at the correct positions -->
+  <xacro:left_smdw_wheel prefix="front_left_" />
+  <xacro:left_smdw_wheel prefix="rear_right_" />
+  <xacro:right_smdw_wheel prefix="front_right_" />
+  <xacro:right_smdw_wheel prefix="rear_left_" />
+
+  <!-- Attach wheels to base_link -->
+  <joint name="front_left_wheel_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="front_left_base_link" />
+    <origin xyz="0.2159 0.3175 0.0508" rpy="0 0 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="100.0" velocity="10.0" />
+    <dynamics friction="0.001" />
+  </joint>
+
+  <joint name="rear_left_wheel_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="rear_left_base_link" />
+    <origin xyz="-0.2159 0.3175 0.0508" rpy="0 0 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="100.0" velocity="10.0" />
+    <dynamics friction="0.001" />
+  </joint>
+
+  <joint name="front_right_wheel_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="front_right_base_link" />
+    <origin xyz="0.2159 -0.3175 0.0508" rpy="0 0 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="100.0" velocity="10.0" />
+    <dynamics friction="0.001" />
+  </joint>
+
+  <joint name="rear_right_wheel_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="rear_right_base_link" />
+    <origin xyz="-0.2159 -0.3175 0.0508" rpy="0 0 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="100.0" velocity="10.0" />
+    <dynamics friction="0.001" />
+  </joint>
+
+</robot>

@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="right_smdw_wheel">
+
+  <xacro:macro name="smdw_roller" params="prefix type number mesh_path xyz rpy axis">
+    <link name="${prefix}${type}_link_${number}">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.0343" />
+        <inertia ixx="0.00001147" ixy="0" ixz="0" iyy="0.000001312" iyz="0" izz="0.00001147" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_path}FR_${type}_link_${number}.STL" />
+        </geometry>
+        <material name="${prefix}base_color" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_path}FR_${type}_link_${number}.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}${type}_joint_${number}" type="continuous">
+      <origin xyz="${xyz}" rpy="${rpy}" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}${type}_link_${number}" />
+      <axis xyz="${axis}" />
+    </joint>
+
+    <gazebo reference="${prefix}${type}_link_${number}">
+      <material>Gazebo/DarkGrey</material>
+      <surface>
+        <friction>
+          <ode>
+            <mu1>1.0</mu1>   
+            <mu2>2.0</mu2> 
+            <fdir1>1 0 0</fdir1>  
+          </ode>
+        </friction>
+        <contact>
+          <ode>
+            <min_depth>0.001</min_depth>
+            <max_vel>10.0</max_vel>
+          </ode>
+        </contact>
+      </surface>
+    </gazebo>
+
+  </xacro:macro>
+
+  <!-- Define the right_smdw_wheel macro -->
+  <xacro:macro name="right_smdw_wheel" params="prefix">
+    <!-- Define properties -->
+    <xacro:property name="mesh_path" value="file:///home/imbatman/smdw_ws/src/right_smdw/meshes/" />
+    <xacro:property name="roller_mass" value="0.0343" />
+    <xacro:property name="roller_ixx" value="0.00001147" />
+    <xacro:property name="roller_iyy" value="0.000001312" />
+    <xacro:property name="roller_izz" value="0.00001147" />
+
+    <!-- Define materials -->
+    <material name="${prefix}base_color">
+      <color rgba="0.79216 0.81961 0.93333 1" />
+    </material>
+    <material name="${prefix}wheel_color">
+      <color rgba="0.25098 0.25098 0.25098 1" />
+    </material>
+
+    <!-- Base link -->
+    <link name="${prefix}base_link">
+      <inertial>
+        <origin xyz="-4.3311E-18 1.504E-12 1.7857E-18" rpy="0 0 0" />
+        <mass value="1.9429" />
+        <inertia ixx="0.0019245" ixy="8.1609E-21" ixz="-8.1689E-08" iyy="0.0049239" iyz="-7.5092E-20" izz="0.0032216" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_path}front_right_wheel_base_link.STL" />
+        </geometry>
+        <material name="${prefix}wheel_color" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_path}front_right_wheel_base_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Properties for RR rollers (FR_RR_link_1 to FR_RR_link_14) -->
+    <xacro:property name="RR1_xyz" value="0.0000 -0.0279 0.0533" />
+    <xacro:property name="RR1_rpy" value="0.0000 0.0000 0.7854" />
+    <xacro:property name="RR1_axis" value="0 -1 0" />
+    <xacro:property name="RR2_xyz" value="0.0338 -0.0279 0.0498" />
+    <xacro:property name="RR2_rpy" value="0.1534 0.1516 0.7971" />
+    <xacro:property name="RR2_axis" value="0 -1 0" />
+    <xacro:property name="RR3_xyz" value="0.0671 -0.0279 0.0370" />
+    <xacro:property name="RR3_rpy" value="0.4107 0.3798 0.8654" />
+    <xacro:property name="RR3_axis" value="0 -1 0" />
+    <xacro:property name="RR4_xyz" value="0.0914 -0.0279 0.0000" />
+    <xacro:property name="RR4_rpy" value="1.5708 0.7854 1.5708" />
+    <xacro:property name="RR4_axis" value="0 -1 0" />
+    <xacro:property name="RR5_xyz" value="0.0845 -0.0279 -0.0350" />
+    <xacro:property name="RR5_rpy" value="2.1007 0.7119 1.9363" />
+    <xacro:property name="RR5_axis" value="0 -1 0" />
+    <xacro:property name="RR6_xyz" value="0.0647 -0.0279 -0.0647" />
+    <xacro:property name="RR6_rpy" value="2.5261 0.5236 2.1863" />
+    <xacro:property name="RR6_axis" value="0 -1 0" />
+    <xacro:property name="RR7_xyz" value="0.0350 -0.0279 -0.0845" />
+    <xacro:property name="RR7_rpy" value="2.8567 0.2740 2.3166" />
+    <xacro:property name="RR7_axis" value="0 -1 0" />
+    <xacro:property name="RR8_xyz" value="0.0000 -0.0279 -0.0914" />
+    <xacro:property name="RR8_rpy" value="3.1416 0.0000 2.3562" />
+    <xacro:property name="RR8_axis" value="0 -1 0" />
+    <xacro:property name="RR9_xyz" value="-0.0350 -0.0279 -0.0845" />
+    <xacro:property name="RR9_rpy" value="-2.8567 -0.2740 2.3166" />
+    <xacro:property name="RR9_axis" value="0 -1 0" />
+    <xacro:property name="RR10_xyz" value="-0.0647 -0.0279 -0.0647" />
+    <xacro:property name="RR10_rpy" value="-2.5261 -0.5236 2.1863" />
+    <xacro:property name="RR10_axis" value="0 -1 0" />
+    <xacro:property name="RR11_xyz" value="-0.0845 -0.0279 -0.0350" />
+    <xacro:property name="RR11_rpy" value="-2.1007 -0.7119 1.9363" />
+    <xacro:property name="RR11_axis" value="0 -1 0" />
+    <xacro:property name="RR12_xyz" value="-0.0914 -0.0279 0.0000" />
+    <xacro:property name="RR12_rpy" value="-1.5708 -0.7854 1.5708" />
+    <xacro:property name="RR12_axis" value="0 -1 0" />
+    <xacro:property name="RR13_xyz" value="-0.0671 -0.0279 0.0370" />
+    <xacro:property name="RR13_rpy" value="-0.4107 -0.3798 0.8654" />
+    <xacro:property name="RR13_axis" value="0 -1 0" />
+    <xacro:property name="RR14_xyz" value="-0.0338 -0.0279 0.0498" />
+    <xacro:property name="RR14_rpy" value="-0.1534 -0.1516 0.7971" />
+    <xacro:property name="RR14_axis" value="0 -1 0" />
+
+    <!-- Properties for LR rollers (FR_LR_link_1 to FR_LR_link_14) -->
+    <xacro:property name="LR1_xyz" value="0.0000 0.0279 0.0914" />
+    <xacro:property name="LR1_rpy" value="0.0000 0.0000 0.7854" />
+    <xacro:property name="LR1_axis" value="0 -1 0" />
+    <xacro:property name="LR2_xyz" value="0.0350 0.0279 0.0845" />
+    <xacro:property name="LR2_rpy" value="0.2849 0.2740 0.8249" />
+    <xacro:property name="LR2_axis" value="0 -1 0" />
+    <xacro:property name="LR3_xyz" value="0.0647 0.0279 0.0647" />
+    <xacro:property name="LR3_rpy" value="0.6155 0.5236 0.9553" />
+    <xacro:property name="LR3_axis" value="0 -1 0" />
+    <xacro:property name="LR4_xyz" value="0.0845 0.0279 0.0350" />
+    <xacro:property name="LR4_rpy" value="1.0409 0.7119 1.2053" />
+    <xacro:property name="LR4_axis" value="0 -1 0" />
+    <xacro:property name="LR5_xyz" value="0.0914 0.0279 0.0000" />
+    <xacro:property name="LR5_rpy" value="1.5708 0.7854 1.5708" />
+    <xacro:property name="LR5_axis" value="0 -1 0" />
+    <xacro:property name="LR6_xyz" value="0.0671 0.0279 -0.0370" />
+    <xacro:property name="LR6_rpy" value="2.7309 0.3798 2.2762" />
+    <xacro:property name="LR6_axis" value="0 -1 0" />
+    <xacro:property name="LR7_xyz" value="0.0338 0.0279 -0.0498" />
+    <xacro:property name="LR7_rpy" value="2.9882 0.1516 2.3445" />
+    <xacro:property name="LR7_axis" value="0 -1 0" />
+    <xacro:property name="LR8_xyz" value="0.0000 0.0279 -0.0533" />
+    <xacro:property name="LR8_rpy" value="3.1416 0.0000 2.3562" />
+    <xacro:property name="LR8_axis" value="0 -1 0" />
+    <xacro:property name="LR9_xyz" value="-0.0338 0.0279 -0.0498" />
+    <xacro:property name="LR9_rpy" value="-2.9882 -0.1516 2.3445" />
+    <xacro:property name="LR9_axis" value="0 -1 0" />
+    <xacro:property name="LR10_xyz" value="-0.0671 0.0279 -0.0370" />
+    <xacro:property name="LR10_rpy" value="-2.7309 -0.3798 2.2762" />
+    <xacro:property name="LR10_axis" value="0 -1 0" />
+    <xacro:property name="LR11_xyz" value="-0.0914 0.0279 0.0000" />
+    <xacro:property name="LR11_rpy" value="-1.5708 -0.7854 1.5708" />
+    <xacro:property name="LR11_axis" value="0 -1 0" />
+    <xacro:property name="LR12_xyz" value="-0.0845 0.0279 0.0350" />
+    <xacro:property name="LR12_rpy" value="-1.0409 -0.7119 1.2053" />
+    <xacro:property name="LR12_axis" value="0 -1 0" />
+    <xacro:property name="LR13_xyz" value="-0.0647 0.0279 0.0647" />
+    <xacro:property name="LR13_rpy" value="-0.6155 -0.5236 0.9553" />
+    <xacro:property name="LR13_axis" value="0 -1 0" />
+    <xacro:property name="LR14_xyz" value="-0.0350 0.0279 0.0845" />
+    <xacro:property name="LR14_rpy" value="-0.2849 -0.2740 0.8249" />
+    <xacro:property name="LR14_axis" value="0 -1 0" />
+
+    <!-- Instantiate RR rollers -->
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="1" mesh_path="${mesh_path}" xyz="${RR1_xyz}" rpy="${RR1_rpy}" axis="${RR1_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="2" mesh_path="${mesh_path}" xyz="${RR2_xyz}" rpy="${RR2_rpy}" axis="${RR2_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="3" mesh_path="${mesh_path}" xyz="${RR3_xyz}" rpy="${RR3_rpy}" axis="${RR3_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="4" mesh_path="${mesh_path}" xyz="${RR4_xyz}" rpy="${RR4_rpy}" axis="${RR4_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="5" mesh_path="${mesh_path}" xyz="${RR5_xyz}" rpy="${RR5_rpy}" axis="${RR5_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="6" mesh_path="${mesh_path}" xyz="${RR6_xyz}" rpy="${RR6_rpy}" axis="${RR6_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="7" mesh_path="${mesh_path}" xyz="${RR7_xyz}" rpy="${RR7_rpy}" axis="${RR7_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="8" mesh_path="${mesh_path}" xyz="${RR8_xyz}" rpy="${RR8_rpy}" axis="${RR8_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="9" mesh_path="${mesh_path}" xyz="${RR9_xyz}" rpy="${RR9_rpy}" axis="${RR9_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="10" mesh_path="${mesh_path}" xyz="${RR10_xyz}" rpy="${RR10_rpy}" axis="${RR10_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="11" mesh_path="${mesh_path}" xyz="${RR11_xyz}" rpy="${RR11_rpy}" axis="${RR11_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="12" mesh_path="${mesh_path}" xyz="${RR12_xyz}" rpy="${RR12_rpy}" axis="${RR12_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="13" mesh_path="${mesh_path}" xyz="${RR13_xyz}" rpy="${RR13_rpy}" axis="${RR13_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="RR" number="14" mesh_path="${mesh_path}" xyz="${RR14_xyz}" rpy="${RR14_rpy}" axis="${RR14_axis}" />
+
+    <!-- Instantiate LR rollers -->
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="1" mesh_path="${mesh_path}" xyz="${LR1_xyz}" rpy="${LR1_rpy}" axis="${LR1_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="2" mesh_path="${mesh_path}" xyz="${LR2_xyz}" rpy="${LR2_rpy}" axis="${LR2_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="3" mesh_path="${mesh_path}" xyz="${LR3_xyz}" rpy="${LR3_rpy}" axis="${LR3_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="4" mesh_path="${mesh_path}" xyz="${LR4_xyz}" rpy="${LR4_rpy}" axis="${LR4_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="5" mesh_path="${mesh_path}" xyz="${LR5_xyz}" rpy="${LR5_rpy}" axis="${LR5_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="6" mesh_path="${mesh_path}" xyz="${LR6_xyz}" rpy="${LR6_rpy}" axis="${LR6_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="7" mesh_path="${mesh_path}" xyz="${LR7_xyz}" rpy="${LR7_rpy}" axis="${LR7_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="8" mesh_path="${mesh_path}" xyz="${LR8_xyz}" rpy="${LR8_rpy}" axis="${LR8_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="9" mesh_path="${mesh_path}" xyz="${LR9_xyz}" rpy="${LR9_rpy}" axis="${LR9_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="10" mesh_path="${mesh_path}" xyz="${LR10_xyz}" rpy="${LR10_rpy}" axis="${LR10_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="11" mesh_path="${mesh_path}" xyz="${LR11_xyz}" rpy="${LR11_rpy}" axis="${LR11_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="12" mesh_path="${mesh_path}" xyz="${LR12_xyz}" rpy="${LR12_rpy}" axis="${LR12_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="13" mesh_path="${mesh_path}" xyz="${LR13_xyz}" rpy="${LR13_rpy}" axis="${LR13_axis}" />
+    <xacro:smdw_roller prefix="${prefix}" type="LR" number="14" mesh_path="${mesh_path}" xyz="${LR14_xyz}" rpy="${LR14_rpy}" axis="${LR14_axis}" />
+  </xacro:macro>
+
+</robot>

@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="smdw_robot_base">
+  <!-- Tower Link -->
+  <link name="smdw_tower_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.5"/> <!-- Mass of the tower, e.g., 0.5 kg -->
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/> <!-- Center of the tower -->
+      <geometry>
+        <cylinder radius="0.02" length="0.08"/> <!-- 2 cm radius, 8 cm tall -->
+      </geometry>
+      <material name="gray"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.08"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- LIDAR Link -->
+  <link name="smdw_lidar_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.2"/> <!-- Typical mass for a small LIDAR -->
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.03"/> <!-- 5 cm radius, 3 cm height -->
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.0508" length="0.03"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Joint to attach tower to base_link -->
+  <joint name="tower_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="smdw_tower_link"/>
+    <origin xyz="0.254 0 0.1016" rpy="0 0 0"/> <!-- Tower base 25.4 cm forward, 10.16 cm up -->
+  </joint>
+
+  <!-- Joint to attach LIDAR to tower_link -->
+  <joint name="lidar_joint" type="fixed">
+    <parent link="smdw_tower_link"/>
+    <child link="smdw_lidar_link"/>
+    <origin xyz="0 0 0.14" rpy="0 0 0"/> <!-- LIDAR on top of tower -->
+  </joint>
+
+  <!-- 3D LIDAR Gazebo Plugin -->
+  <gazebo reference="smdw_lidar_link">
+    <sensor type="ray" name="smdw_lidar_sensor">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize> <!-- Show rays in Gazebo -->
+      <update_rate>5.0</update_rate> <!-- 5 Hz, lower for performance -->
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples> <!-- 1° resolution horizontally -->
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle> <!-- -180° -->
+            <max_angle>3.14159</max_angle> <!-- +180° -->
+          </horizontal>
+          <vertical>
+            <samples>30</samples> <!-- 3° resolution vertically -->
+            <resolution>1</resolution>
+            <min_angle>-0.5236</min_angle> <!-- -30° -->
+            <max_angle>0.5236</max_angle> <!-- +30° -->
+          </vertical>
+        </scan>
+        <range>
+          <min>0.1</min> <!-- 10 cm -->
+          <max>10.0</max> <!-- 10 m -->
+          <resolution>0.01</resolution> <!-- 1 cm -->
+        </range>
+      </ray>
+      <plugin name="smdw_lidar_controller" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <namespace>/smdw_robot_base</namespace>
+          <remapping>~/out:=/lidar/points</remapping> <!-- Changed to PointCloud2 topic -->
+        </ros>
+        <frame_name>smdw_lidar_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+</robot>
